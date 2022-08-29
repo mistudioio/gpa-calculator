@@ -1,7 +1,7 @@
 # gpa-calculator
 
 
-In the real world, the top portion populates data from the database: 
+In a real-world scenario, the top portion populates data from the database:  
 <ul>
  <li>'Student Name'</li> 
  <li>'Hours Earned to Date' - now hard coded.</li> 
