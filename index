@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style type="text/css">
+  .navbar-fixed-bottom, .navbar-fixed-top {
+        position: relative !important;
+  }    
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+        border-top: none !important;
+        border-collapse: inherit !important;
+    }
+
+    .finalResult {
+        color: #c10000;
+        font-size: 20px;
+        font-weight: bold;
+    }
+  </style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="script.js"></script>
+</head>
+
+<body>
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Life GPA Scholarship Calculator</h1>
+        <h2>Hi, /Student Name/</h2>
+        <p>
+            The GPA is calculated to determine a student's eligibility for the Scholarship.
+        </p>
+    </div>
+
+  <form id="formCurrent" runat="server">
+        <div class="container">
+
+           <table class="table table-borderless" id="actual">
+                <thead>
+                    <tr>
+                        <th scope="col">Hours Earned to Date</th>
+                        <th scope="col">Current GPA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="currectData" class="data-gpa">
+                        <td><input id="HCurrent" type="text" name="hours" class="form-control" value="48"/></td>                
+                        <td><input id="GPACurrent" type="text" name="gpa" class="form-control" value="4.00"/></td>
+                        <td><input id="currentTotal" class="invisible" type="text" name="total" value="0"/></td>                         
+                    </tr>                                                                               
+                </tbody>
+            </table>
+        </div>
+  </form>
+
+	<form id="form1" runat="server">
+        <div class="container">
+            <h3>To determine your projected GPA and Hours, complete the following: </h3>
+            <table class="table table-borderless" id="projected">
+                <thead>
+                    <tr>
+                        <th scope="col">Projected Earned Hours per Semester</th>
+                        <th scope="col">Projected GPA per Semester</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="row_0" class="data-gpa">
+                        <td><input type="text" name="hours" class="form-control" oninput="calculate('row_0')" value="0"/></td>  
+                        <td><input type="text" name="gpa" class="form-control" oninput="calculate('row_0')" value="0.00"/></td> 
+                        <td><input class="invisible" type="text" name="total" value="0"/></td>                                 
+                    </tr>
+                    <tr id="row_1" class="data-gpa">
+                        <td><input type="text" name="hours" class="form-control" oninput="calculate('row_1')" value="0"/></td>
+                        <td><input type="text" name="gpa" class="form-control" oninput="calculate('row_1')" value="0.00"/></td>  
+                        <td><input class="invisible" type="text" name="total" value="0"/></td>                               
+                    </tr>
+                    <tr id="row_2" class="data-gpa">
+                        <td><input type="text" name="hours" class="form-control" oninput="calculate('row_2')" value="0"/></td>
+                        <td><input type="text" name="gpa" class="form-control" oninput="calculate('row_2')" value="0.00"/></td> 
+                        <td><input class="invisible" type="text" name="total" value="0"/></td>                                 
+                    </tr>                                                  
+                </tbody>
+            </table>
+            <div>
+                <p class="finalResult">Projected GPA: <span id="resultLG">0</span></p>
+                <p class="finalResult">Projected Hours: <span id="resultLH">0</span></p>
+                <span id="resultQP" class="invisible"></span>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
