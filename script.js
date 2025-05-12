@@ -1,75 +1,84 @@
+$(document).ready(function () {
+    const $HCurrent = $('#HCurrent');
+    const $GPACurrent = $('#GPACurrent');
+    const $currentTotal = $('#currentTotal');
 
-$(document).ready(function() {
+    const updateCurrentTotal = () => {
+        const hours = parseFloat($HCurrent.val()) || 0;
+        const gpa = parseFloat($GPACurrent.val()) || 0;
+        $currentTotal.val((hours * gpa).toFixed(2));
+    };
 
-        var HCurrent = $('#HCurrent').val();
-        var GPACurrent = $('#GPACurrent').val();
+    updateCurrentTotal();
 
-        $('#currentTotal').val(HCurrent * GPACurrent);
+    // Only allow digits for hours
+    $("input[name='hours']").on('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+    });
 
-        $("input[name='hours']").on('input', function () {
-            $(this).val($(this).val().replace(/[^0-9]/g, ''));
-        });
+    // Allow GPA between 0 and 4, with decimals
+    $("input[name='gpa']").on('input', function () {
+        let value = this.value;
 
-        $("input[name='gpa']").on('input', function () {    
-    		var value = $(this).val();
+        // Disallow non-numeric input
+        if (isNaN(value)) {
+            alert("Please enter a valid number.");
+            this.value = '';
+            return;
+        }
 
-    		if ((value !== '') && (value.indexOf('.') === -1)) {        
-        	   $(this).val(Math.max(Math.min(value, 4), 0));
-            }
-
-            if (isNaN(value)) {
-                alert("Please, add a numeric value");
-                var value = $(this).val(0);
-            }
-        });
-
+        let gpa = parseFloat(value);
+        if (!isNaN(gpa)) {
+            gpa = Math.min(Math.max(gpa, 0), 4);
+            this.value = gpa;
+        }
+    });
 });
 
-        function calculate(element) {
-            var mainRow = document.getElementById(element);
-            var pHours = mainRow.querySelectorAll("[name=hours]")[0].value;            
-            var pGPA = mainRow.querySelectorAll("[name=gpa]")[0].value;
-            var totalQP = mainRow.querySelectorAll("[name=total]")[0];
-           
-            if (!(pGPA > 4)) {
-                var pQualityPoints = pHours * pGPA;
-                totalQP.value = pQualityPoints;
-            }	
-	
-            //calculate All Projected Life Hours
-            var resultLH = document.getElementById("resultLH");        
-            var hoursAll = document.querySelectorAll("[name=hours]");
-	        var sumLH = 0;
+function calculate(elementId) {
+    const mainRow = document.getElementById(elementId);
 
-            for (i = 0; i < hoursAll.length; ++i) {
-            	var testProjectedHours = parseInt(hoursAll[i].value);
-              	
-                if(isNaN(testProjectedHours)) {
-              		testProjectedHours = 0;                              
-                }
-				sumLH += testProjectedHours;
-            }
- 		    resultLH.textContent = sumLH;
+    const hoursInput = mainRow.querySelector("[name='hours']");
+    const gpaInput = mainRow.querySelector("[name='gpa']");
+    const totalInput = mainRow.querySelector("[name='total']");
 
-            //calculate All Projected Quality Points
-            var resultQP = document.getElementById("resultQP");
-            var qpAll = document.querySelectorAll("[name=total]");
-            var sumQP = 0;
-            for (i = 0; i < qpAll.length; ++i) {
-              sumQP += parseInt(qpAll[i].value);
-            }           
-            resultQP.textContent = sumQP;
+    const hours = parseFloat(hoursInput.value) || 0;
+    const gpa = parseFloat(gpaInput.value) || 0;
 
-            //calculate Projected Life GPA
-            var resultLG = document.getElementById("resultLG");
-            var projectedGPA = sumQP / sumLH;
-            
-            if (!isNaN(projectedGPA)) {
-                resultLG.textContent = projectedGPA.toFixed(2);
-            }
-            if (sumLH == HCurrent.value) {
-                resultLG.textContent = $('#GPACurrent').val();
-            }
-                                   
-        };
+    // Prevent GPA over 4
+    if (gpa <= 4) {
+        const qualityPoints = hours * gpa;
+        totalInput.value = qualityPoints.toFixed(2);
+    }
 
+    // Calculate projected total hours
+    const hoursAll = document.querySelectorAll("[name='hours']");
+    let sumLH = 0;
+    hoursAll.forEach(h => {
+        const val = parseFloat(h.value);
+        sumLH += isNaN(val) ? 0 : val;
+    });
+    document.getElementById("resultLH").textContent = sumLH;
+
+    // Calculate total quality points
+    const qpAll = document.querySelectorAll("[name='total']");
+    let sumQP = 0;
+    qpAll.forEach(qp => {
+        const val = parseFloat(qp.value);
+        sumQP += isNaN(val) ? 0 : val;
+    });
+    document.getElementById("resultQP").textContent = sumQP.toFixed(2);
+
+    // Calculate projected GPA
+    const resultLG = document.getElementById("resultLG");
+    const projectedGPA = sumQP / sumLH;
+
+    const currentHours = parseFloat(document.getElementById('HCurrent').value) || 0;
+    const currentGPA = parseFloat(document.getElementById('GPACurrent').value) || 0;
+
+    if (!isNaN(projectedGPA) && sumLH !== currentHours) {
+        resultLG.textContent = projectedGPA.toFixed(2);
+    } else {
+        resultLG.textContent = currentGPA.toFixed(2);
+    }
+}
