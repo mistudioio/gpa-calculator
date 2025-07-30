@@ -26,4 +26,4 @@ In a real-world implementation:
 
 ## 🚀 Live Demo
 
-👉 [View it live on GitHub Pages](https://agresti.github.io/gpa-calculator/)
+👉 [View it live on GitHub Pages](https://mistudioio.github.io/gpa-calculator/)
